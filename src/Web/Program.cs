@@ -120,16 +120,17 @@ if (useAppConfig)
         }
 
         options.Connect(new Uri(appConfigEndpoint), new DefaultAzureCredential())
-        .ConfigureRefresh(refresh =>
-        {
-            // Default cache expiration is 30 seconds
-            refresh.Register("eShopWeb:Settings:NoResultsMessage").SetCacheExpiration(TimeSpan.FromSeconds(10));
-        })
-        .UseFeatureFlags(featureFlagOptions =>
-        {
-            // Default cache expiration is 30 seconds
-            featureFlagOptions.CacheExpirationInterval = TimeSpan.FromSeconds(10);
-        });
+            .ConfigureRefresh(refresh =>
+            {
+                // Default refresh interval is 30 seconds
+                refresh.Register("eShopWeb:Settings:NoResultsMessage")
+                       .SetRefreshInterval(TimeSpan.FromSeconds(10));
+            })
+            .UseFeatureFlags(featureFlagOptions =>
+            {
+                // Default refresh interval is 30 seconds
+                featureFlagOptions.SetRefreshInterval(TimeSpan.FromSeconds(10));
+            });
     });
 }
 
