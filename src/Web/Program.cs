@@ -131,6 +131,7 @@ if (useAppConfig)
                 // Default refresh interval is 30 seconds
                 featureFlagOptions.SetRefreshInterval(TimeSpan.FromSeconds(10));
             });
+
     });
 }
 
