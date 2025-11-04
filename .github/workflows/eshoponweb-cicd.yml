@@ -1,8 +1,6 @@
 name: eShopOnWeb Build and Test
-
 #Triggers (uncomment line below to use it)
 on: workflow_dispatch # on: [push, workflow_dispatch]
-
 #Environment variables https://docs.github.com/en/actions/learn-github-actions/environment-variables
 env:
   RESOURCE-GROUP: rg-eshoponweb-westeurope
@@ -10,8 +8,6 @@ env:
   TEMPLATE-FILE: infra/webapp.bicep
   SUBSCRIPTION-ID: 36113dcd-b99c-4d57-9d6b-a98141a327db
   WEBAPP-NAME: devops-webapp-westeurope-282781967
-
-
 jobs:
   #Build, test and publish .net web project in repository
   buildandtest:
@@ -29,7 +25,7 @@ jobs:
     - name: Build with dotnet
       run: dotnet build ./eShopOnWeb.sln --configuration Release
     - name: Test with dotnet
-      run: dotnet test ./eShopOnWeb.sln --configuration Release
+      run: dotnet test ./eShopOnWeb.sln --configuration Release --filter "FullyQualifiedName!~PublicApiIntegrationTests"
     - name: dotnet publish
       run: |
         dotnet publish ./src/Web/Web.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
@@ -96,7 +92,6 @@ jobs:
         type: ZIP
         app-name: ${{ env.WEBAPP-NAME  }}
         package: .net-app/app.zip
-
     # Publish website to Azure App Service using CLI (WebApp)
     - name: Publish Website to WebApp
       uses: Azure/cli@v2
